@@ -1,11 +1,12 @@
 import react, { useEffect, useState } from 'react';
-import { dbService } from '../firebase';
-import Nweet from '../components/Nweet'
+import { dbService, storageService } from '../firebase';
+import Nweet from '../components/Nweet';
+import { v4 as uuidv4 } from 'uuid';
 
 const Home = ({userObj}) => {
     const [nweet, setNweet] = useState("");
     const [nweets, setNweets] = useState([]);
-    const [attachment, setAttachment] = useState();
+    const [attachment, setAttachment] = useState("");
     /* const getNweats = async() => {
         const dbNweets = await dbService.collection("nweets").get();
         dbNweets.forEach(document => {
@@ -30,14 +31,26 @@ const Home = ({userObj}) => {
     
 
     const onSubmit = async (event) => {
-      event.preventDefault();
-      await dbService.collection("nweets").add({
-        text : nweet,                       
-        createdAt: Date.now(),
-        creatorId: userObj.uid,
-      });
-      setNweet("");
+        event.preventDefault();
+        let attachmentUrl = "";
+        if (attachment !== "") {
+          const attachmentRef = storageService
+            .ref()
+            .child(`${userObj.uid}/${uuidv4()}`);
+          const response = await attachmentRef.putString(attachment, "data_url");
+          attachmentUrl = await response.ref.getDownloadURL();
+        }
+        const nweetObj = {
+            text : nweet,                       
+            createdAt: Date.now(),
+            creatorId: userObj.uid,
+            attachmentUrl,
+        }
+        await dbService.collection("nweets").add(nweetObj);
+        setNweet("");
+        setAttachment("");
     };
+
     const onChange = (event) => {
       const {
         target: { value },
@@ -51,17 +64,17 @@ const Home = ({userObj}) => {
         } = event;
         const theFile = files[0];
         const reader = new FileReader();
-        reader.readAsDataURL(theFile);
         reader.onloadend = (finishedEvent) => {
             const {
                 currentTarget: {result},
             } = finishedEvent;
             setAttachment(result);
         }
+        reader.readAsDataURL(theFile);
     }
 
     const onClearAttachment = () => {
-        setAttachment(null);
+        setAttachment("");
     }
     
     return (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { dbService } from '../firebase';
+import { dbService, storageService } from '../firebase';
 
 const Nweet = ({ nweetObj, isOwner }) => {
 
@@ -10,16 +10,18 @@ const Nweet = ({ nweetObj, isOwner }) => {
         console.log(ok);
         if(ok){
             await dbService.doc(`nweets/${nweetObj.id}`).delete();
+            await storageService.refFromURL(nweetObj.attachmentUrl).delete();
         }
     }
 
     const toggleEditing = () => setEditing((prev) => !prev); // 기존 값 반대를 출력
     const onSubmit = async (event) => {
         event.preventDefault();
-        await dbService.doc(`nweets/${nweetObj.id}`).update({
+        /* await dbService.doc(`nweets/${nweetObj.id}`).update({
             text: newNweet,
         });
-        toggleEditing();
+        toggleEditing(); */
+
     }
 
     const onChange = (event) => {
@@ -42,6 +44,9 @@ const Nweet = ({ nweetObj, isOwner }) => {
             ) : (
                 <>
                 <h4>{nweetObj.text}</h4>
+                {nweetObj.attachmentUrl && (
+                <img src={nweetObj.attachmentUrl} width="50px" height="50px" />
+                )}
                 {isOwner && (
                     <>
                     <button onClick={onDeleteClick}>Delete</button>
