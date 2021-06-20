@@ -17,10 +17,10 @@ const Nweet = ({ nweetObj, isOwner }) => {
     const toggleEditing = () => setEditing((prev) => !prev); // 기존 값 반대를 출력
     const onSubmit = async (event) => {
         event.preventDefault();
-        /* await dbService.doc(`nweets/${nweetObj.id}`).update({
+        await dbService.doc(`nweets/${nweetObj.id}`).update({
             text: newNweet,
         });
-        toggleEditing(); */
+        toggleEditing();
 
     }
 

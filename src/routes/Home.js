@@ -3,7 +3,7 @@ import { dbService, storageService } from '../firebase';
 import Nweet from '../components/Nweet';
 import { v4 as uuidv4 } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faPaperPlane, faUpload } from '@fortawesome/free-solid-svg-icons';
 
 const Home = ({userObj}) => {
     const [nweet, setNweet] = useState("");
@@ -80,6 +80,7 @@ const Home = ({userObj}) => {
     }
     
     return (
+      <div className="container_h">
       <div className="sub_container">
         <div className="form_container">
         <form onSubmit={onSubmit}>
@@ -90,9 +91,11 @@ const Home = ({userObj}) => {
             type="text"
             placeholder="What's on your mind?"
             maxLength={120}
+            required
           />
-          <input className="attat" type="file" accept="image/*" onChange={onFileChange}/>
-          <button className="subm" type="submit" value="Nweet"><FontAwesomeIcon icon={faPaperPlane} /></button>
+          <label for="file_input"><FontAwesomeIcon icon={faCamera} size="2x" color="#0455BF"/></label>
+          <input className="attat" id="file_input" type="file" accept="image/*" onChange={onFileChange}/>
+          <button className="subm" type="submit" value="Nweet"><FontAwesomeIcon icon={faPaperPlane} size="2x" color="#0455BF"/></button>
           {attachment && <div>
                 <img src={attachment} height="50px" width="50px" />
                 <button onClick={onClearAttachment}>Clear</button>
@@ -106,6 +109,7 @@ const Home = ({userObj}) => {
             <h1><Nweet id="nweeting"key={nweet.createdAt} nweetObj={nweet} isOwner={nweet.creatorId === userObj.uid}/></h1>
         ))}
         </div>
+      </div>
       </div>
     );
   };

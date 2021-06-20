@@ -5,6 +5,11 @@
     --highlighted:#0455BF;
 }
 
+*{
+    padding: 1px 1px;
+    margin:0px;
+}
+
 body{
     background-color: var(--backgroundColor);
 }
@@ -77,8 +82,14 @@ body{
     margin-bottom: 5px;
 }
 
+.container_h{
+    display: flex;
+    justify-content: center;
+}
+
 .sub_container{
     width: 50%;
+    min-width: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -105,22 +116,42 @@ body{
     color: white;
 }
 
-.sub_container form .content{
-    width: 100%;
+.sub_container .form_container{
+    display: flex;
+    justify-content:  flex-end;
+}
+
+.sub_container .form_container .content{
+    width: 350px;
     height: 40px;
-    background-color: gray;
-    color: white;
+    background-color: white;
+    color: black;
     margin: 5px 5px;
     border-radius: 10px;
     border:none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.sub_container form .attat{
+.sub_container .form_container label{
     position: absolute;
+    margin-top: 8px;
+    right: 50px;
 }
 
-.sub_container form .subm{
+.sub_container .form_container .attat{
+    display: none;
+}
+
+.sub_container .form_container .subm{
     position: absolute;
+    margin-top: 13px;
+    right: 15px;
+    background: none;
+    border: none;
+    padding: 0;
+    float: right;
 }
 
 .nweet_container{
