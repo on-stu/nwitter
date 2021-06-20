@@ -8,6 +8,11 @@ function App() {
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
+        if(user.displayName === null){
+          user.updateProfile({
+            displayName: "user",
+          })
+        }
         setUserObj({
           displayName: user.displayName,
           uid: user.uid,

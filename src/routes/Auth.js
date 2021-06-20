@@ -1,10 +1,12 @@
+import { faCamera, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import react, { useState } from 'react';
 import { authService, firebaseInstance } from '../firebase';
 
 const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); /* 이걸 Hooks라고 하는 듯... 아마 뒤에 꺼로 앞의 것 값을 바꿔주는 것 같음 */
-    const [NewAccount, setNewAccount] = useState(true);
+    const [NewAccount, setNewAccount] = useState(false);
     const [error, setError] = useState("");
 
     const onChange = (event) => {
@@ -46,18 +48,19 @@ const Auth = () => {
     }
 
     return(
-    <div>
-        <form onSubmit={onSubmit}>
+    <div className="container">
+        <span className="iconst"><FontAwesomeIcon icon={faUsers} size="4x" color={"#0455BF"}/></span>
+        <form className="AuthContainer" onSubmit={onSubmit}>
             <input name="email" type="email" placeholder="E-mail" required value={email} onChange={onChange}/>
             <input name="password" type="password" placeholder="Password" onChange={onChange} value={password} required />
-            <input type="submit" value={NewAccount ? "Create Account" : "Sign In"} />
+            <input className="btn" type="submit" value={NewAccount ? "Create Account" : "Sign In"} />
             {error}
         </form>
         <span onClick={toggleAccount}>
             {NewAccount ? "Sign In" : "Create Account"}
         </span>
         <div>
-            <button name="google" onClick={onSocialClick}>Start with Google</button>
+            <button className="google" name="google" onClick={onSocialClick}>Start with Google</button>
         </div>
     </div>
     );
